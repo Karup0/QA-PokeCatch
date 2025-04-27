@@ -1,0 +1,38 @@
+{% extends 'collection/base.html' %}
+{# Esta plantilla hereda la estructura base con Navbar y estilos #}
+
+{% block title %}Pokémon Capturados{% endblock %}
+{# Cambiamos el título de la pestaña del navegador #}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h1>Mis Pokémon Capturados</h1>
+</div>
+
+<div class="row">
+    {% for pokemon in pokemons %}
+    <div class="col-md-4 mb-4">
+        <div class="card card-pokemon p-3 text-center">
+            {# Si es shiny, usamos la URL de shiny; si no, la normal #}
+            {% if pokemon.is_shiny %}
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/{{ pokemon.pokedex_number }}.png" 
+                     alt="{{ pokemon.pokemon_name }} (Shiny)" 
+                     class="img-fluid mb-3" 
+                     style="width: 120px; height: 120px;">
+            {% else %}
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{ pokemon.pokedex_number }}.png" 
+                     alt="{{ pokemon.pokemon_name }}" 
+                     class="img-fluid mb-3" 
+                     style="width: 120px; height: 120px;">
+            {% endif %}
+            <h4>{{ pokemon.pokemon_name }}</h4>
+            <p>#{{ pokemon.pokedex_number }}</p>
+            <p>{% if pokemon.is_shiny %}✨ Shiny{% else %}Normal{% endif %}</p>
+            <p class="text-muted small">{{ pokemon.date_captured }}</p>
+        </div>
+    </div>
+    {% empty %}
+    <p>No has capturado ningún Pokémon aún.</p>
+    {% endfor %}
+</div>
+{% endblock %}

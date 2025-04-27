@@ -1,0 +1,14 @@
+{% extends 'collection/base.html' %}
+{# Este archivo hereda la estructura general de base.html, incluyendo el Navbar y estilos #}
+
+{% block title %}Pokémon Faltantes{% endblock %}
+{# Cambiamos el título de la pestaña del navegador a "Pokémon Faltantes" #}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h1>Pokémon Faltantes</h1>
+</div>
+
+<p>Esta sección mostrará en el futuro los Pokémon que aún no has capturado.</p>
+<p>Compararemos los Pokémon capturados contra la lista oficial de PokéAPI para detectar los que faltan.</p>
+{% endblock %}

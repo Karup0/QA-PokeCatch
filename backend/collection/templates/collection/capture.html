@@ -1,0 +1,33 @@
+{% extends 'collection/base.html' %}
+
+{% block title %}Capturar Pokémon{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h1>Captura un Pokémon</h1>
+</div>
+
+{# Si hay un error, mostramos alerta #}
+{% if error_message %}
+<div class="alert alert-danger">
+    {{ error_message }}
+</div>
+{% endif %}
+
+<form method="POST" class="card p-4 mx-auto card-pokemon" style="max-width: 500px;">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="pokemon_name" class="form-label">Nombre del Pokémon</label>
+        <input type="text" class="form-control" id="pokemon_name" name="pokemon_name" required>
+    </div>
+    <div class="mb-3">
+        <label for="pokedex_number" class="form-label">Número de Pokédex</label>
+        <input type="number" class="form-control" id="pokedex_number" name="pokedex_number" required>
+    </div>
+    <div class="form-check mb-3">
+        <input type="checkbox" class="form-check-input" id="is_shiny" name="is_shiny">
+        <label class="form-check-label" for="is_shiny">¿Es Shiny?</label>
+    </div>
+    <button type="submit" class="btn btn-pokecatch w-100">Capturar Pokémon</button>
+</form>
+{% endblock %}
