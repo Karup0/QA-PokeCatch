@@ -1,0 +1,95 @@
+{% load static %}
+
+<div class="pokemon-grid">
+    <!-- Barra de búsqueda y filtros (igual que en faltantes) -->
+    <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+            <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre o número..." 
+                   onkeyup="filterPokemon()">
+        </div>
+        <div class="col-md-6 mb-3">
+            <select id="typeFilter" class="form-select" onchange="filterPokemon()">
+                <option value="all">Todos los tipos</option>
+                {% for type in pokemon_types %}
+                    <option value="{{ type|lower }}">{{ type|title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <!-- Grid de Pokémon capturados -->
+    <div class="row" id="pokemonContainer">
+        {% for pokemon in pokemons %}
+        <div class="col-md-4 mb-4 pokemon-card" 
+             data-name="{{ pokemon.name|lower }}" 
+             data-number="{{ pokemon.pokedex_number }}"
+             data-types="{% for type in pokemon.types %}{{ type|lower }}{% if not forloop.last %},{% endif %}{% endfor %}">
+            
+            <div class="card card-pokemon p-3 text-center h-100">
+                <!-- Indicador shiny -->
+                {% if pokemon.is_shiny %}
+                <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">
+                    Shiny
+                </span>
+                {% endif %}
+                
+                <img src="{{ pokemon.sprite }}" 
+                     alt="{{ pokemon.name }}" 
+                     class="img-fluid mb-3 pokemon-img">
+                
+                <h5>{{ pokemon.name|title }}</h5>
+                <p>#{{ pokemon.pokedex_number }}</p>
+                
+                <div class="types-container mb-2">
+                    {% for type in pokemon.types %}
+                    <span class="badge type-{{ type|lower }}">{{ type|title }}</span>
+                    {% endfor %}
+                </div>
+                
+                <div class="mt-auto">
+                    <small class="text-muted">
+                        Capturado: {{ pokemon.date_captured|date:"d/m/Y" }}
+                    </small>
+                    
+                    <div class="d-flex justify-content-center gap-2 mt-2">
+                        <!-- Cambia el botón de liberar por esto -->
+<button type="button" class="btn btn-sm btn-danger" 
+data-bs-toggle="modal" 
+data-bs-target="#releaseModal"
+data-pokemon-name="{{ pokemon.name|title }}"
+data-release-url="{% url 'delete_pokemon' pokemon.id %}">
+<i class="bi bi-trash"></i> Liberar
+</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                ¡No has capturado ningún Pokémon todavía!
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Incluir el mismo JS y CSS que en _pokemon_grid.html -->
+<script>
+function filterPokemon() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const selectedType = document.getElementById('typeFilter').value.toLowerCase();
+    
+    document.querySelectorAll('.pokemon-card').forEach(card => {
+        const name = card.dataset.name;
+        const number = card.dataset.number;
+        const types = card.dataset.types.split(',');
+        
+        const matchesSearch = name.includes(searchTerm) || number.includes(searchTerm);
+        const matchesType = selectedType === 'all' || types.includes(selectedType);
+        
+        card.style.display = (matchesSearch && matchesType) ? 'block' : 'none';
+    });
+}
+</script>

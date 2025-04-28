@@ -19,7 +19,8 @@ from django.urls import path, include
 from django.shortcuts import redirect
 
 urlpatterns = [
+    path('', lambda request: redirect('login')),  # 🆕 Redirigir la raíz hacia login
     path('admin/', admin.site.urls),
-    path('', include('collection.urls')),
+    path('', include('collection.urls')),  # Incluimos las rutas de nuestra app
 ]
 

@@ -1,23 +1,18 @@
+# models.py
+
 from django.db import models
+from django.contrib.auth.models import User
 
 class PokemonCapture(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     pokemon_name = models.CharField(max_length=100)
     pokedex_number = models.IntegerField()
-    date_captured = models.DateField(auto_now_add=True)
+    date_captured = models.DateTimeField(auto_now_add=True)
     is_shiny = models.BooleanField(default=False)
-    
+    types = models.JSONField(default=list, blank=True)
+    sprite_url = models.URLField(null=True, blank=True, default='')
+
     def __str__(self):
         return f"{self.pokemon_name} (#{self.pokedex_number})"
 
-class TradeOffer(models.Model):
-    """
-    Modelo para registrar ofertas de intercambio de Pokémon.
-    """
-    username = models.CharField(max_length=100)  # Nombre del usuario que ofrece
-    pokemon_name = models.CharField(max_length=100)  # Nombre del Pokémon ofrecido
-    pokedex_number = models.IntegerField()  # Número de Pokédex
-    is_shiny = models.BooleanField(default=False)  # ¿Es shiny?
-    date_posted = models.DateTimeField(auto_now_add=True)  # Fecha en que se ofreció
 
-    def __str__(self):
-        return f"{self.pokemon_name} ofrecido por {self.username}"

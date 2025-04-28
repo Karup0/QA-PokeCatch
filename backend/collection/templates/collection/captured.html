@@ -1,38 +1,135 @@
 {% extends 'collection/base.html' %}
 {# Esta plantilla hereda la estructura base con Navbar y estilos #}
+{% load static %}
 
 {% block title %}Pokémon Capturados{% endblock %}
 {# Cambiamos el título de la pestaña del navegador #}
 
 {% block content %}
-<div class="text-center mb-4">
-    <h1>Mis Pokémon Capturados</h1>
+<div class="container mt-4">
+    <div class="text-center mb-4">
+        <h1>Mis Pokémon Capturados</h1>
+        <p class="lead">Aquí puedes gestionar todos los Pokémon que has capturado</p>
+    </div>
+
+    {# Incluimos el grid de Pokémon con filtros y opciones de gestión #}
+    {% include 'collection/_pokemon_grid_captured.html' %}
 </div>
 
-<div class="row">
-    {% for pokemon in pokemons %}
-    <div class="col-md-4 mb-4">
-        <div class="card card-pokemon p-3 text-center">
-            {# Si es shiny, usamos la URL de shiny; si no, la normal #}
-            {% if pokemon.is_shiny %}
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/{{ pokemon.pokedex_number }}.png" 
-                     alt="{{ pokemon.pokemon_name }} (Shiny)" 
-                     class="img-fluid mb-3" 
-                     style="width: 120px; height: 120px;">
-            {% else %}
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{ pokemon.pokedex_number }}.png" 
-                     alt="{{ pokemon.pokemon_name }}" 
-                     class="img-fluid mb-3" 
-                     style="width: 120px; height: 120px;">
-            {% endif %}
-            <h4>{{ pokemon.pokemon_name }}</h4>
-            <p>#{{ pokemon.pokedex_number }}</p>
-            <p>{% if pokemon.is_shiny %}✨ Shiny{% else %}Normal{% endif %}</p>
-            <p class="text-muted small">{{ pokemon.date_captured }}</p>
+<div class="modal fade" id="releaseModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">¿Liberar a <span id="pokemonName"></span>?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Estás a punto de liberar a este Pokémon. ¿Estás seguro?</p>
+                <p class="text-muted">Esta acción no se puede deshacer.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form id="releaseForm" method="post" action="">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Sí, liberar</button>
+                </form>
+            </div>
         </div>
     </div>
-    {% empty %}
-    <p>No has capturado ningún Pokémon aún.</p>
-    {% endfor %}
 </div>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Estilos para las tarjetas */
+    .card-pokemon {
+        transition: transform 0.2s;
+        height: 100%;
+    }
+
+    .card-pokemon:hover {
+        transform: scale(1.03);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    /* Estilos para la imagen del Pokémon */
+    .pokemon-img {
+        width: 100%;
+        height: 200px;
+        object-fit: contain;
+    }
+
+    /* Estilos para los tipos */
+    .types-container {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        flex-wrap: wrap;
+    }
+
+    .badge {
+        padding: 0.5em 0.75em;
+        border-radius: 1em;
+        font-size: 0.9rem;
+        text-transform: capitalize;
+    }
+
+    /* Colores para cada tipo */
+    .type-normal { background-color: #A8A878; color: white; }
+    .type-fire { background-color: #F08030; color: white; }
+    .type-water { background-color: #6890F0; color: white; }
+    .type-electric { background-color: #F8D030; color: black; }
+    .type-grass { background-color: #78C850; color: white; }
+    .type-ice { background-color: #98D8D8; color: black; }
+    .type-fighting { background-color: #C03028; color: white; }
+    .type-poison { background-color: #A040A0; color: white; }
+    .type-ground { background-color: #E0C068; color: black; }
+    .type-flying { background-color: #A890F0; color: white; }
+    .type-psychic { background-color: #F85888; color: white; }
+    .type-bug { background-color: #A8B820; color: white; }
+    .type-rock { background-color: #B8A038; color: white; }
+    .type-ghost { background-color: #705898; color: white; }
+    .type-dragon { background-color: #7038F8; color: white; }
+    .type-dark { background-color: #705848; color: white; }
+    .type-steel { background-color: #B8B8D0; color: black; }
+    .type-fairy { background-color: #EE99AC; color: black; }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function filterPokemon() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const selectedType = document.getElementById('typeFilter').value.toLowerCase();
+    
+    document.querySelectorAll('.pokemon-card').forEach(card => {
+        const name = card.dataset.name;
+        const number = card.dataset.number;
+        const types = card.dataset.types.split(',');
+        
+        const matchesSearch = name.includes(searchTerm) || number.includes(searchTerm);
+        const matchesType = selectedType === 'all' || types.includes(selectedType);
+        
+        card.style.display = (matchesSearch && matchesType) ? 'block' : 'none';
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const releaseModal = document.getElementById('releaseModal');
+    const pokemonName = document.getElementById('pokemonName');
+    const releaseForm = document.getElementById('releaseForm');
+    
+    // Configurar el modal antes de mostrarlo
+    document.querySelectorAll('[data-bs-toggle="release"]').forEach(button => {
+        button.addEventListener('click', function() {
+            const name = this.getAttribute('data-pokemon-name');
+            const url = this.getAttribute('data-release-url');
+            
+            pokemonName.textContent = name;
+            releaseForm.action = url;
+        });
+    });
+});
+</script>
 {% endblock %}

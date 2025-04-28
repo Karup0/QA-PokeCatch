@@ -1,0 +1,125 @@
+{% load static %}
+
+<div class="pokemon-grid">
+    <!-- Barra de búsqueda y filtros -->
+    <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+            <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre o número..." 
+                   onkeyup="filterPokemon()">
+        </div>
+        <div class="col-md-6 mb-3">
+            <select id="typeFilter" class="form-select" onchange="filterPokemon()">
+                <option value="all">Todos los tipos</option>
+                {% for type in pokemon_types %}
+                    <option value="{{ type|lower }}">{{ type|title }}</option>
+                {% empty %}
+                    <option value="">No hay tipos disponibles</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <!-- Grid de Pokémon -->
+    <div class="row" id="pokemonContainer">
+        {% for pokemon in missing_pokemons %}
+        <div class="col-md-4 mb-4 pokemon-card" 
+             data-name="{{ pokemon.name|lower }}" 
+             data-number="{{ pokemon.pokedex_number }}"
+             data-types="{% for type in pokemon.types %}{{ type|lower }}{% if not forloop.last %},{% endif %}{% endfor %}">
+            
+            <div class="card card-pokemon p-3 text-center h-100">
+                <img src="{{ pokemon.sprite }}" 
+                     alt="{{ pokemon.name }}" 
+                     class="img-fluid mb-3 pokemon-img">
+                
+                <h5>{{ pokemon.name|title }}</h5>
+                <p>#{{ pokemon.pokedex_number }}</p>
+                
+                <div class="types-container mb-2">
+                    {% for type in pokemon.types %}
+                    <span class="badge type-{{ type|lower }}">{{ type|title }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                ¡No hay Pokémon faltantes en esta generación!
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+function filterPokemon() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const selectedType = document.getElementById('typeFilter').value.toLowerCase();
+    
+    document.querySelectorAll('.pokemon-card').forEach(card => {
+        const name = card.dataset.name;
+        const number = card.dataset.number;
+        const types = card.dataset.types.split(',');
+        
+        const matchesSearch = name.includes(searchTerm) || number.includes(searchTerm);
+        const matchesType = selectedType === 'all' || types.includes(selectedType);
+        
+        card.style.display = (matchesSearch && matchesType) ? 'block' : 'none';
+    });
+}
+</script>
+
+<style>
+/* Estilos para las tarjetas */
+.card-pokemon {
+    transition: transform 0.2s;
+    height: 100%;
+}
+
+.card-pokemon:hover {
+    transform: scale(1.03);
+}
+
+/* Estilos para la imagen del Pokémon */
+.pokemon-img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+}
+
+/* Estilos para los tipos */
+.types-container {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.badge {
+    padding: 0.5em 0.75em;
+    border-radius: 1em;
+    font-size: 0.9rem;
+    text-transform: capitalize;
+}
+
+/* Colores para cada tipo */
+.type-normal { background-color: #A8A878; color: white; }
+.type-fire { background-color: #F08030; color: white; }
+.type-water { background-color: #6890F0; color: white; }
+.type-electric { background-color: #F8D030; color: black; }
+.type-grass { background-color: #78C850; color: white; }
+.type-ice { background-color: #98D8D8; color: black; }
+.type-fighting { background-color: #C03028; color: white; }
+.type-poison { background-color: #A040A0; color: white; }
+.type-ground { background-color: #E0C068; color: black; }
+.type-flying { background-color: #A890F0; color: white; }
+.type-psychic { background-color: #F85888; color: white; }
+.type-bug { background-color: #A8B820; color: white; }
+.type-rock { background-color: #B8A038; color: white; }
+.type-ghost { background-color: #705898; color: white; }
+.type-dragon { background-color: #7038F8; color: white; }
+.type-dark { background-color: #705848; color: white; }
+.type-steel { background-color: #B8B8D0; color: black; }
+.type-fairy { background-color: #EE99AC; color: black; }
+</style>

@@ -1,0 +1,97 @@
+{% load static %}
+
+<div class="generation-menu text-center mb-5">
+    <h3 class="mb-4">Selecciona una generación</h3>
+    <div class="row g-3">
+        <!-- Generación 1 - Bulbasaur -->
+        <div class="col-md-4 mb-3">
+            <button class="btn btn-generation w-100 py-3" data-gen="1">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" width="40" class="me-2">
+                Generación 1 (1-151)
+            </button>
+        </div>
+        
+        <!-- Generación 2 - Chikorita -->
+        <div class="col-md-4 mb-3">
+            <button class="btn btn-generation w-100 py-3" data-gen="2">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/152.png" width="40" class="me-2">
+                Generación 2 (152-251)
+            </button>
+        </div>
+        
+        <!-- Generación 3 - Treecko -->
+        <div class="col-md-4 mb-3">
+            <button class="btn btn-generation w-100 py-3" data-gen="3">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/252.png" width="40" class="me-2">
+                Generación 3 (252-386)
+            </button>
+        </div>
+        
+        <!-- Generación 4 - Turtwig -->
+        <div class="col-md-4 mb-3">
+            <button class="btn btn-generation w-100 py-3" data-gen="4">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/387.png" width="40" class="me-2">
+                Generación 4 (387-493)
+            </button>
+        </div>
+        
+        <!-- Generación 5 - Snivy -->
+        <div class="col-md-4 mb-3">
+            <button class="btn btn-generation w-100 py-3" data-gen="5">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/495.png" width="40" class="me-2">
+                Generación 5 (494-649)
+            </button>
+        </div>
+        
+        <!-- Generación 6 - Chespin -->
+        <div class="col-md-4 mb-3">
+            <button class="btn btn-generation w-100 py-3" data-gen="6">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/650.png" width="40" class="me-2">
+                Generación 6 (650-721)
+            </button>
+        </div>
+        
+        <!-- Generación 7 - Rowlet -->
+        <div class="col-md-4 mb-3">
+            <button class="btn btn-generation w-100 py-3" data-gen="7">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/722.png" width="40" class="me-2">
+                Generación 7 (722-809)
+            </button>
+        </div>
+        
+        <!-- Generación 8 - Grookey -->
+        <div class="col-md-4 mb-3">
+            <button class="btn btn-generation w-100 py-3" data-gen="8">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/810.png" width="40" class="me-2">
+                Generación 8 (810-898)
+            </button>
+        </div>
+        
+        <!-- Generación 9 - Sprigatito -->
+        <div class="col-md-4 mb-3">
+            <button class="btn btn-generation w-100 py-3" data-gen="9">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/906.png" width="40" class="me-2">
+                Generación 9 (906-1025)
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+.btn-generation {
+    background: linear-gradient(135deg, #2A75BB, #3B4CCA);
+    color: white;
+    border: 3px solid #FFCB05;
+    border-radius: 15px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+    padding: 1rem;
+}
+.btn-generation:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #FFCB05;
+}
+</style>

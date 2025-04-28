@@ -1,14 +1,18 @@
 {% extends 'collection/base.html' %}
-{# Este archivo hereda la estructura general de base.html, incluyendo el Navbar y estilos #}
+{% load static %}
 
 {% block title %}Pokémon Faltantes{% endblock %}
-{# Cambiamos el título de la pestaña del navegador a "Pokémon Faltantes" #}
 
 {% block content %}
-<div class="text-center mb-4">
-    <h1>Pokémon Faltantes</h1>
+<div class="container">
+    <h1 class="text-center my-4">Pokémon Faltantes</h1>
+    
+    {% if show_grid %}
+        {% include 'collection/partials/_pokemon_grid.html' %}
+    {% else %}
+        {% include 'collection/partials/_generation_menu.html' %}
+    {% endif %}
 </div>
 
-<p>Esta sección mostrará en el futuro los Pokémon que aún no has capturado.</p>
-<p>Compararemos los Pokémon capturados contra la lista oficial de PokéAPI para detectar los que faltan.</p>
+<script src="{% static 'collection/js/missing.js' %}"></script>
 {% endblock %}
