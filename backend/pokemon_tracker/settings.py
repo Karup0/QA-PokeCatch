@@ -78,10 +78,10 @@ WSGI_APPLICATION = 'pokemon_tracker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'QA-TaskApp',  # nombre de tu base de datos MongoDB
+        'NAME': 'PokemonsDB',  # nombre de tu base de datos MongoDB
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
-            'host': 'mongodb+srv://l20212929:Galgo-3800@pokemon-trainers.jezt9du.mongodb.net/?retryWrites=true&w=majority&appName=Pokemon-Trainers&authSource=admin',  # o el URI si usas MongoDB Atlas
+            'host': 'mongodb+srv://l20212929:Galgo-3800@clusterproyectosunivers.0cjdbbz.mongodb.net/?retryWrites=true&w=majority&appName=ClusterProyectosUniversidad',  # o el URI si usas MongoDB Atlas
         }
     }
 }

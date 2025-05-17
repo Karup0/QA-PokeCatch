@@ -1,3 +1,5 @@
 /frontend
 /Notas del desarrollador.txt
 /test_mongo_connection.py
+/venv
+/.env
