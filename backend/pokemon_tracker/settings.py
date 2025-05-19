@@ -92,12 +92,12 @@ WSGI_APPLICATION = 'pokemon_tracker.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'PokemonsDB',  # nombre de tu base de datos MongoDB
-        'ENFORCE_SCHEMA': False,
-        'CLIENT': {
-            'host': 'mongodb+srv://l20212929:Galgo-3800@clusterproyectosunivers.0cjdbbz.mongodb.net/?retryWrites=true&w=majority&appName=ClusterProyectosUniversidad',  # o el URI si usas MongoDB Atlas
-        }
+        'USER': 'postgres',  # usuario de tu base de datos MongoDB
+        'PASSWORD': 'Karupo#23',  # contraseña de tu base de datos MongoDB
+        'HOST': 'localhost',  # dirección del servidor MongoDB
+        'PORT': '5432',  # puerto de tu servidor MongoDB
     }
 }
 

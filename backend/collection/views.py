@@ -2,11 +2,12 @@ import requests  # 🆕 Para conectarnos a PokéAPI
 import time # 🆕 Para manejar tiempos de espera
 from django.core.cache import cache  # 🆕 Para manejar caché
 from django.conf import settings
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse  # 🆕 Importar JsonResponse
 from .models import PokemonCapture  # 🆕 Importamos los modelos necesarios
 
 @login_required(login_url='login')
@@ -273,3 +274,5 @@ def pokemon_api_proxy(request, pokedex_num):
         return JsonResponse(response.json(), safe=False)
     except requests.exceptions.RequestException:
         return JsonResponse({'error': 'Pokémon no disponible'}, status=404)
+    
+    
