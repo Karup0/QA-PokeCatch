@@ -1,4 +1,6 @@
 vamos a trabajar con unas mejoras que quiero integrar usando unicamente las herramientas con las que ya cuento como Django, Bootstrapp5 y PostgreSQL como:
+!CUIDADO HAZ LOS CAMBIOS POR MODULOS, NO PIDAS HACER TODOS LOS CAMBIOS DE JALON PARA QUE LA IA NO SE CONFUNDA!
+
 - Ver a los usuarios que forman parte de la aplicacion, que se encuentren acitvos y poder iniciar un chat, que la interfaz de chat sea semejante a la de Whatsapp la misma estructura
 - Crear un chat en tiempo real entre dos usuarios o mas, aun no se que herramienta usar y me gustaria que fuera un app progresiva, tal vez usar react-native o no se algo seguro para que sea multiplataforma.
 - En el debe ser posible mandar mensajes y y tener una opcion para ver los pokemones con los que cuentas (asi como filtrarlos para buscar mas rapido, ya sea por tipo, nombre o numeros existentes dentro de los que tienes) para poder hacer intercambios acordados por los usuarios, ya sea un pokemon o mas (antes pues ellos ya hablaron y aclaron el tipo o por como se quieran basar en hacer el intercambio).
@@ -6,3 +8,8 @@ vamos a trabajar con unas mejoras que quiero integrar usando unicamente las herr
 - Claramente la opcion de rechazar un pokemon.
 - Confirmar dentro de los pokemones que ya tienes cuando rebiste uno como intercambio y por quien, esto se puede ver en un boton de "Details" que te dara mas informacion o un historial sobre ese pokemon.
 - La opcion tambien para que no haya problema con contar con pokemones repetidos, porque habran casos en los que los usuarios compartan y/o reciban pokemones ya existentes en sus colecciones
+
+-Revisar porque al eliminar un pokemon no desaparece de tu coleccion
+- Porque aparecen pokemones repetidos capturados
+-Vi como puedo hacer pruebas dando permisos con mi servidor para que puedna usar la app desde otros pc
+- hacer los cambios por modulos, hoy quice meter todos y eso provoco un alboroto en todo.

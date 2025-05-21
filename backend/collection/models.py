@@ -1,5 +1,3 @@
-# models.py
-
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -9,10 +7,8 @@ class PokemonCapture(models.Model):
     pokedex_number = models.IntegerField()
     date_captured = models.DateTimeField(auto_now_add=True)
     is_shiny = models.BooleanField(default=False)
-    types = models.JSONField(default=list, blank=True)
+    types = models.JSONField(default=list)  # ¡Usa el JSONField nativo de Django!
     sprite_url = models.URLField(null=True, blank=True, default='')
 
     def __str__(self):
         return f"{self.pokemon_name} (#{self.pokedex_number})"
-
-

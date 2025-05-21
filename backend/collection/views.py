@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse  # 🆕 Importar JsonResponse
 from .models import PokemonCapture  # 🆕 Importamos los modelos necesarios
+from django.db import connection
 
 @login_required(login_url='login')
 def capture_pokemon(request):
@@ -208,21 +209,27 @@ def captured_pokemon(request):
         'show_grid': True
     })
     
+
 @login_required(login_url='login')
 def delete_pokemon(request, pokemon_id):
-    pokemon = get_object_or_404(PokemonCapture, id=pokemon_id, user=request.user)
-    
     if request.method == 'POST':
-        # Limpiar caché de Pokémon faltantes
-        generation_id = get_generation_by_pokedex(pokemon.pokedex_number)
-        if generation_id:
-            cache_key = f"missing_pokemon_user_{request.user.id}_gen_{generation_id}"
-            cache.delete(cache_key)
+        try:
+            with connection.cursor() as cursor:
+                # Eliminación directa con SQL
+                cursor.execute(
+                    "DELETE FROM collection_pokemoncapture WHERE id = %s AND user_id = %s",
+                    [pokemon_id, request.user.id]
+                )
+                
+                # Verificar si se eliminó algún registro
+                if cursor.rowcount > 0:
+                    return JsonResponse({'status': 'success'})
+                return JsonResponse({'status': 'error', 'message': 'Pokémon no encontrado'}, status=404)
         
-        pokemon.delete()
-        messages.success(request, f'Has liberado a {pokemon.pokemon_name}')
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
     
-    return redirect('captured')
+    return JsonResponse({'status': 'error'}, status=400)
 
 # REGISTRO
 def register(request):

@@ -52,15 +52,11 @@
                     </small>
                     
                     <div class="d-flex justify-content-center gap-2 mt-2">
-                        <!-- Cambia el botón de liberar por esto -->
-<button type="button" class="btn btn-sm btn-danger" 
-data-bs-toggle="modal" 
-data-bs-target="#releaseModal"
-data-pokemon-name="{{ pokemon.name|title }}"
-data-release-url="{% url 'delete_pokemon' pokemon.id %}">
-<i class="bi bi-trash"></i> Liberar
+                        <!-- bOTON PARA ELIMINAR POKEMON -->
+                        <button type="button" class="btn btn-sm btn-danger" 
+    onclick="deletePokemon({{ pokemon.id }}, '{{ pokemon.name|title }}')">
+    <i class="bi bi-trash"></i> Liberar
 </button>
-
                     </div>
                 </div>
             </div>
@@ -77,19 +73,26 @@ data-release-url="{% url 'delete_pokemon' pokemon.id %}">
 
 <!-- Incluir el mismo JS y CSS que en _pokemon_grid.html -->
 <script>
-function filterPokemon() {
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    const selectedType = document.getElementById('typeFilter').value.toLowerCase();
-    
-    document.querySelectorAll('.pokemon-card').forEach(card => {
-        const name = card.dataset.name;
-        const number = card.dataset.number;
-        const types = card.dataset.types.split(',');
-        
-        const matchesSearch = name.includes(searchTerm) || number.includes(searchTerm);
-        const matchesType = selectedType === 'all' || types.includes(selectedType);
-        
-        card.style.display = (matchesSearch && matchesType) ? 'block' : 'none';
-    });
+function deletePokemon(pokemonId, pokemonName) {
+    if (confirm(`¿Estás seguro de liberar a ${pokemonName}?`)) {
+        fetch(`/delete/${pokemonId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Error al liberar el Pokémon');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Ocurrió un error al liberar el Pokémon');
+        });
+    }
 }
 </script>

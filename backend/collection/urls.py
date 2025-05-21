@@ -12,5 +12,4 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('delete/<int:pokemon_id>/', views.delete_pokemon, name='delete_pokemon'),
-
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
