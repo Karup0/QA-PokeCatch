@@ -1,0 +1,32 @@
+{% extends 'collection/base.html' %}
+{% load static %}
+{% block content %}
+<h2>Transferir Pokémon</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <label for="pokemon_id">Elige un Pokémon:</label><br>
+    <select name="pokemon_id" required>
+        {% for p in user_pokemons %}
+            <option value="{{ p.id }}">{{ p.pokemon_name }} (#{{ p.pokedex_number }})</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label for="receiver_id">Elige un usuario receptor:</label><br>
+    <select name="receiver_id" required>
+        {% for u in users %}
+            <option value="{{ u.id }}">{{ u.username }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <button type="submit">Transferir</button>
+</form>
+
+{% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}

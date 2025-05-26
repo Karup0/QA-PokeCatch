@@ -9,24 +9,10 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-from decouple import config
+
 from pathlib import Path
 import os
 
-
-SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', default=False, cast=bool)
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT'),
-    }
-}
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -97,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'PokemonsDB',  # nombre de tu base de datos MongoDB
         'USER': 'postgres',  # usuario de tu base de datos MongoDB
-        'PASSWORD': 'Karupo#23',  # contraseña de tu base de datos MongoDB
+        'PASSWORD': 'hola123',  # contraseña de tu base de datos MongoDB
         'HOST': 'localhost',  # dirección del servidor MongoDB
         'PORT': '5432',  # puerto de tu servidor MongoDB
     }

@@ -11,4 +11,4 @@ class PokemonCapture(models.Model):
     sprite_url = models.URLField(null=True, blank=True, default='')
 
     def __str__(self):
-        return f"{self.pokemon_name} (#{self.pokedex_number})"
+        return f"{self.pokemon_name} (#{self.pokedex_number})"  

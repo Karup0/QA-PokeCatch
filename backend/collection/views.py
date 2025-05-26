@@ -282,4 +282,33 @@ def pokemon_api_proxy(request, pokedex_num):
     except requests.exceptions.RequestException:
         return JsonResponse({'error': 'Pokémon no disponible'}, status=404)
     
-    
+@login_required
+def transfer_pokemon(request):
+    user = request.user
+    users = User.objects.exclude(id=user.id)  # Receptores posibles
+    user_pokemons = PokemonCapture.objects.filter(user=user)
+
+    if request.method == 'POST':
+        pokemon_id = request.POST.get('pokemon_id')
+        receiver_id = request.POST.get('receiver_id')
+
+        pokemon = get_object_or_404(PokemonCapture, id=pokemon_id, user=user)
+        receiver = get_object_or_404(User, id=receiver_id)
+
+        # Crear una copia para el receptor
+        PokemonCapture.objects.create(
+            user=receiver,
+            pokemon_name=pokemon.pokemon_name,
+            pokedex_number=pokemon.pokedex_number,
+            is_shiny=pokemon.is_shiny,
+            types=pokemon.types,
+            sprite_url=pokemon.sprite_url
+        )
+
+        messages.success(request, f"¡{pokemon.pokemon_name} fue enviado a {receiver.username} exitosamente!")
+        return redirect('transfer_pokemon')
+
+    return render(request, 'collection/transfer_pokemon.html', {
+        'user_pokemons': user_pokemons,
+        'users': users
+    })
